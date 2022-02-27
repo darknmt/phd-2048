@@ -198,13 +198,19 @@ GameManager.prototype.move = function (direction) {
         if (tile.value == 1 && next) {
           self.moveTile(tile, positions.farthest);
           if (self.relTime) {
+            //if postdoc then gameover
+            if (next.value == 512 || next.value == 1024){this.over=true}  else 
+            { 
             if (next.benefitedFrom != self.relTime) {
+
+            
               next.value *= 2;
               if (next.value > self.maxTile) self.maxTile = next.value;
               if (next.value >= 2048) self.won = true;
               next.benefitedFrom = self.relTime;
               self.karma++;
               moved = true;
+            }
             }
           }
           else {
@@ -218,7 +224,7 @@ GameManager.prototype.move = function (direction) {
         }
         else if (next && next.value === tile.value && !next.mergedFrom) {
           if(next.value != 0) {
-            if((self.maxTile < 128 || self.garbCount % 2 > 0)
+            if((self.maxTile < 64 || self.garbCount % 2 > 0)
               && ((next.value == 8 && Math.random() >= 0.7)
               || (next.value == 16 && Math.random() >= 0.85))) {
               var merged = new Tile(positions.next, 0);
